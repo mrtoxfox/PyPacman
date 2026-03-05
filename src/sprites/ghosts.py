@@ -161,9 +161,13 @@ class Ghost(Sprite, ABC):
             return
         if (self.next_tile[1] >= self.num_cols):
             self.next_tile = (self.next_tile[0], 0)
+            self.prev = self.next_tile
+            self._t = 1
             return
         if self.next_tile[1] < 0:
             self.next_tile = (self.next_tile[0], self.num_cols - 1)
+            self.prev = self.next_tile
+            self._t = 1
 
     def prepare_movement(self):
         ghost_x, ghost_y = self._get_idx_from_coords((self.rect_x, self.rect_y))
