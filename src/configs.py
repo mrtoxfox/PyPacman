@@ -47,3 +47,4 @@ GHOST_SCATTER_TARGETS = {
     "clyde": (31, 30)
 }
 loading_screen_gif = "assets/other/loading.gif"
+IMMORTAL_DURATION = 10000  # milliseconds

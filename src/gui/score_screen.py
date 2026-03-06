@@ -30,4 +30,8 @@ class ScoreScreen:
         highscore_text = "HIGHSCORE: "+str(self._game_state.highscore)
         hs_surface = self.font.render(highscore_text, True, Colors.WHITE)
         self._screen.blit(hs_surface, (self.start_x + 300, self.start_y))
+
+        lives_text = "LIVES: " + str(self._game_state.lives)
+        lives_surface = self.font.render(lives_text, True, Colors.WHITE)
+        self._screen.blit(lives_surface, (self.start_x + 600, self.start_y))
         

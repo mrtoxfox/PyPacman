@@ -1,3 +1,4 @@
+import pygame
 from pygame import (K_DOWN, K_ESCAPE, K_LEFT, K_RIGHT, K_SPACE, K_UP, KEYDOWN,
                     QUIT, K_q)
 from pygame import USEREVENT
@@ -12,6 +13,19 @@ class EventHandler:
         self._game_screen.running = False
 
     def key_bindings(self, key):
+        if key == K_SPACE:
+            self._game_screen.is_paused = not self._game_screen.is_paused
+            if self._game_screen.is_paused:
+                pygame.mixer.music.pause()
+            else:
+                pygame.mixer.music.unpause()
+            return
+        if key == K_q:
+            if self._game_screen.game_over:
+                self._game_screen.running = False
+            return
+        if self._game_screen.is_paused or self._game_screen.game_over:
+            return
         if key == K_LEFT:
             self._game_screen.direction = "l"
         elif key == K_RIGHT:

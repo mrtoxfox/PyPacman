@@ -1,5 +1,6 @@
 from math import ceil
 
+import pygame
 from pygame import image, transform
 from pygame.sprite import Sprite
 from pygame import Surface, USEREVENT
@@ -224,6 +225,15 @@ class Pacman(Sprite):
         self.game_state.pacman_rect = (self.rect_x, self.rect_y, 
                                        CELL_SIZE[0]*2, CELL_SIZE[0]*2)
 
+    def apply_immortal_effect(self):
+        if self.game_state.is_immortal:
+            tick = pygame.time.get_ticks() // 100
+            alpha = 80 if tick % 2 == 0 else 200
+            self.image = self.image.copy()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+
     def update(self, dt: float):
         self.frame_update()
         self.build_bounding_boxes(self.rect_x, self.rect_y)
@@ -232,5 +242,6 @@ class Pacman(Sprite):
         self.boundary_check()
         self.eat_dots()
         self.frame_direction_update()
+        self.apply_immortal_effect()
         if self.collectibles == 0:
             self.game_state.level_complete = True

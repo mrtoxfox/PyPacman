@@ -169,7 +169,7 @@ class Ghost(Sprite, ABC):
         ghost_x, ghost_y = self._get_idx_from_coords((self.rect_x, self.rect_y))
         if self.next_tile:
             ghost_x, ghost_y = self.next_tile
-        if self.is_scared:
+        if self.is_scared or self._game_state.is_immortal:
             self._target = self.get_random_target()
         else:
             self._target = self.determine_target()
@@ -255,7 +255,7 @@ class Ghost(Sprite, ABC):
         self._creation_time = pytime.get_ticks()
 
     def check_collisions(self):
-        ghost_rect = Rect(self.rect.x, self.rect.y, 
+        ghost_rect = Rect(self.rect.x, self.rect.y,
                           PACMAN[0]//2, PACMAN[1]//2)
         pacman_coords = (self._game_state.pacman_rect[0],
                          self._game_state.pacman_rect[1],
@@ -264,13 +264,20 @@ class Ghost(Sprite, ABC):
         pacman_rect = Rect(pacman_coords)
         if ghost_rect.colliderect(pacman_rect):
             if self.is_scared:
-                self.reset_ghost()  
+                self.reset_ghost()
                 self.sounds.play_sound("eat_ghost")
                 self._game_state.points += GHOST_POINT
-            else:
-                self._game_state.is_pacman_dead = True
+            elif not self._game_state.is_immortal:
+                self._game_state.lives -= 1
+                self._game_state.points = max(0, self._game_state.points // 2)
                 self.sounds.play_sound("death")
                 wait(1000)
+                if self._game_state.lives <= 0:
+                    self._game_state.is_pacman_dead = True
+                else:
+                    self._game_state.is_immortal = True
+                    self._game_state.immortal_start_time = pytime.get_ticks()
+                    self._game_state.is_pacman_dead = True
 
     def update(self, dt):
         self.build_bounding_boxes(self.rect_x, self.rect_y)

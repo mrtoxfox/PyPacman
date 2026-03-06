@@ -25,6 +25,51 @@ class GameState:
         self._mins_played = 0
         self._points = -DOT_POINT
         self._level_complete = False
+        self.__is_paused = False
+        self._lives = 3
+        self._is_immortal = False
+        self._immortal_start_time = None
+        self._game_over = False
+
+    @property
+    def is_paused(self):
+        return self.__is_paused
+
+    @is_paused.setter
+    def is_paused(self, val):
+        self.__is_paused = val
+
+    @property
+    def lives(self):
+        return self._lives
+
+    @lives.setter
+    def lives(self, val):
+        self._lives = val
+
+    @property
+    def is_immortal(self):
+        return self._is_immortal
+
+    @is_immortal.setter
+    def is_immortal(self, val):
+        self._is_immortal = val
+
+    @property
+    def immortal_start_time(self):
+        return self._immortal_start_time
+
+    @immortal_start_time.setter
+    def immortal_start_time(self, val):
+        self._immortal_start_time = val
+
+    @property
+    def game_over(self):
+        return self._game_over
+
+    @game_over.setter
+    def game_over(self, val):
+        self._game_over = val
 
     @property
     def level_complete(self):
