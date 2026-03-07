@@ -12,6 +12,11 @@ class EventHandler:
         self._game_screen.running = False
 
     def key_bindings(self, key):
+        if key == K_SPACE:
+            self._game_screen.paused = not self._game_screen.paused
+            return
+        if self._game_screen.paused:
+            return
         if key == K_LEFT:
             self._game_screen.direction = "l"
         elif key == K_RIGHT:

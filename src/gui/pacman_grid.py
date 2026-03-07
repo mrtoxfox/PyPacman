@@ -74,7 +74,15 @@ class PacmanGrid:
         self.num_rows = num_rows
         self.num_cols = num_cols
 
-    def draw_void(self, **kwargs): ...
+    def draw_void(self, **kwargs):
+        draw_rect(
+            kwargs["x"],
+            kwargs["y"],
+            kwargs["w"],
+            kwargs["h"],
+            self._screen,
+            Colors.FLOOR,
+        )
 
     def draw_wall(self, **kwargs):
         draw_rect(
@@ -102,11 +110,24 @@ class PacmanGrid:
         draw_rect(kwargs["x"], kwargs["y"], kwargs["w"], 1, self._screen, Colors.RED)
 
     def draw_level(self):
+        # Pass 1: draw all tiles; dot/power cells get floor background only
         curr_x, curr_y = self.start_x, self.start_y
-        for _, row in enumerate(self._matrix):
-            for _, col in enumerate(row):
-                draw_func = self.function_mapper[col]
-                draw_func(x=curr_x, y=curr_y, w=CELL_SIZE[0], h=CELL_SIZE[0])
+        for row in self._matrix:
+            for col in row:
+                if col in ("dot", "power"):
+                    self.draw_void(x=curr_x, y=curr_y, w=CELL_SIZE[0], h=CELL_SIZE[0])
+                else:
+                    self.function_mapper[col](x=curr_x, y=curr_y, w=CELL_SIZE[0], h=CELL_SIZE[0])
+                curr_x += CELL_SIZE[0]
+            curr_x = self.start_x
+            curr_y += CELL_SIZE[0]
+
+        # Pass 2: draw dot/power sprites on top so no adjacent tile covers them
+        curr_x, curr_y = self.start_x, self.start_y
+        for row in self._matrix:
+            for col in row:
+                if col in ("dot", "power"):
+                    self.function_mapper[col](x=curr_x, y=curr_y, w=CELL_SIZE[0], h=CELL_SIZE[0])
                 curr_x += CELL_SIZE[0]
             curr_x = self.start_x
             curr_y += CELL_SIZE[0]

@@ -1,5 +1,6 @@
 from src.configs import *
 from src.gui.pacman_grid import *
+from src.gui.flashlight import Flashlight
 from src.gui.loading_screen import LoadingScreen
 from src.gui.score_screen import ScoreScreen
 from src.log_handle import get_logger
@@ -21,6 +22,13 @@ class ScreenManager:
         self.all_sprites.add(self.pacman.pacman)
         for ghost in self.pacman.ghost.ghosts_list:
             self.all_sprites.add(ghost)
+        if FLASHLIGHT_ENABLED:
+            self.flashlight = Flashlight(
+                self._screen,
+                self._game_state,
+                self.pacman._matrix,
+                (self.pacman.start_x, self.pacman.start_y),
+            )
 
     def pacman_dead_reset(self):
         if self._game_state.is_pacman_dead:
@@ -32,6 +40,11 @@ class ScreenManager:
             self.all_sprites.add(self.pacman.pacman)
             for ghost in self.pacman.ghost.ghosts_list:
                 self.all_sprites.add(ghost)
+            if FLASHLIGHT_ENABLED:
+                self.flashlight.update_level(
+                    self.pacman._matrix,
+                    (self.pacman.start_x, self.pacman.start_y),
+                )
     
     def check_level_complete(self):
         if self._game_state.level_complete:
@@ -43,6 +56,11 @@ class ScreenManager:
             self.all_sprites.add(self.pacman.pacman)
             for ghost in self.pacman.ghost.ghosts_list:
                 self.all_sprites.add(ghost)
+            if FLASHLIGHT_ENABLED:
+                self.flashlight.update_level(
+                    self.pacman._matrix,
+                    (self.pacman.start_x, self.pacman.start_y),
+                )
             self._game_state.level_complete = False
 
     def draw_screens(self):
@@ -50,3 +68,10 @@ class ScreenManager:
         self.pacman_dead_reset()
         self.score_screen.draw_scores()
         self.check_level_complete()
+
+    def post_draw(self):
+        """Called after all_sprites.draw(). Applies the flashlight overlay,
+        then redraws the score UI on top so it stays visible in the dark."""
+        if FLASHLIGHT_ENABLED:
+            self.flashlight.draw()
+        self.score_screen.draw_scores()

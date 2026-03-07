@@ -25,6 +25,7 @@ class GameState:
         self._mins_played = 0
         self._points = -DOT_POINT
         self._level_complete = False
+        self.paused = False
 
     @property
     def level_complete(self):

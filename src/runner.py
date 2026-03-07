@@ -68,8 +68,10 @@ class GameRun:
             self.screen.fill(Colors.BLACK)
             self.gui.draw_screens()
             self.all_sprites.draw(self.screen)
-            self.all_sprites.update(dt)
-            self.check_highscores()
+            self.gui.post_draw()
+            if not self.game_state.paused:
+                self.all_sprites.update(dt)
+                self.check_highscores()
             pygame.display.flip()
             dt = clock.tick(self.game_state.fps)
             dt /= 100

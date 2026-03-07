@@ -7,6 +7,7 @@ class Colors:
     WALL = (112, 167, 255)
     YELLOW = (252, 186, 3)
     WALL_BLUE = (24, 24, 217)
+    FLOOR = (30, 28, 40)
 
 
 SCREEN_WIDTH = 1024
@@ -47,3 +48,5 @@ GHOST_SCATTER_TARGETS = {
     "clyde": (31, 30)
 }
 loading_screen_gif = "assets/other/loading.gif"
+
+FLASHLIGHT_ENABLED = True
