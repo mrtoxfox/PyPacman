@@ -62,6 +62,16 @@ class Flashlight:
             if row < 0 or col < 0 or row >= self.num_rows or col >= self.num_cols:
                 break
             if self.matrix[row][col] == "wall":
+                # Snap the endpoint to the wall face so consecutive vertices
+                # on the same face share a coordinate, giving a solid edge.
+                if abs(dx) >= abs(dy):
+                    # Ray is primarily horizontal — snap x to the near cell edge
+                    cell_x = self.grid_x + col * CELL_SIZE[0]
+                    x = cell_x if dx > 0 else cell_x + CELL_SIZE[0]
+                else:
+                    # Ray is primarily vertical — snap y to the near cell edge
+                    cell_y = self.grid_y + row * CELL_SIZE[1]
+                    y = cell_y if dy > 0 else cell_y + CELL_SIZE[1]
                 break
         return (x, y)
 
