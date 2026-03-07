@@ -61,6 +61,8 @@ class Ghost(Sprite, ABC):
         self.is_scared = False
         self.curr_pos = None
         self.release_time = None
+        self._frozen = False
+        self._speed_mult = 1.0
         self.sounds = SoundManager()
         self.load_images()
 
@@ -95,7 +97,7 @@ class Ghost(Sprite, ABC):
         if self._target is None or self._t == 1:
             return x1, y1
         if self._t < 1:
-            self._t += self._accelerate
+            self._t += self._accelerate * self._speed_mult
         else:
             self._t = 1  
 
@@ -115,6 +117,8 @@ class Ghost(Sprite, ABC):
 
     def move_ghost(self):
         if not self._is_released:
+            return
+        if self._frozen:
             return
         if self._target is None:
             self.prepare_movement()
@@ -215,6 +219,15 @@ class Ghost(Sprite, ABC):
         rand_col = random.randrange(0, self.num_cols)
         return rand_row, rand_col
     
+    def freeze(self):
+        self._frozen = True
+
+    def unfreeze(self):
+        self._frozen = False
+
+    def set_speed_multiplier(self, mult: float):
+        self._speed_mult = mult
+
     def make_ghost_scared(self):
         self._direction = self._direction_prevent[self._direction]
         self.is_scared = True
@@ -246,6 +259,8 @@ class Ghost(Sprite, ABC):
         self.next_tile = None
         self.release_time = None
         self.is_scared = False
+        self._frozen = False
+        self._speed_mult = 1.0
         self.rect.x
         x, y = self._get_coords_from_idx(self._ghost_matrix_pos)
         self.rect = self.image.get_rect(topleft=(x, y))
@@ -382,3 +397,15 @@ class GhostManager:
                                           self.matrix,
                                           self.game_state))
             adder += 1
+
+    def freeze_all(self):
+        for ghost in self.ghosts_list:
+            ghost.freeze()
+
+    def unfreeze_all(self):
+        for ghost in self.ghosts_list:
+            ghost.unfreeze()
+
+    def set_speed_all(self, mult: float):
+        for ghost in self.ghosts_list:
+            ghost.set_speed_multiplier(mult)

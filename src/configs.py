@@ -47,3 +47,8 @@ GHOST_SCATTER_TARGETS = {
     "clyde": (31, 30)
 }
 loading_screen_gif = "assets/other/loading.gif"
+
+BONUS_DURATION = 10000
+BONUS_SPAWN_INTERVAL = 10000
+BONUS_FIRST_SPAWN_DELAY = 3000
+MAX_ACTIVE_BONUSES = 2

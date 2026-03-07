@@ -43,6 +43,9 @@ class GameRun:
         sound_manager.load_sound("dot", "assets/sounds/pacman_chomp.wav", channel=0)
         sound_manager.load_sound("death","assets/sounds/pacman_death.wav", 0.7, 500, 1)
         sound_manager.load_sound("eat_ghost","assets/sounds/pacman_eatghost.wav", 0.6, 100, 2)
+        sound_manager.load_sound("bonus_spawn", "assets/sounds/pacman_beginning.wav", 0.5, 500, 3)
+        sound_manager.load_sound("bonus_collect", "assets/sounds/pacman_eatghost.wav", 0.7, 100, 4)
+        sound_manager.load_sound("bonus_expire", "assets/sounds/pacman_death.wav", 0.3, 500, 5)
         sound_manager.set_background_music("assets/sounds/backgroud.mp3")
         sound_manager.play_background_music()
 

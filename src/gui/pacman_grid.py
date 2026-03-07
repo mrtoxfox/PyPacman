@@ -6,6 +6,7 @@ from src.sprites.ghosts import GhostManager
 from src.utils.coord_utils import (get_coords_from_idx, place_elements_offset,
                                    precompute_matrix_coords)
 from src.utils.draw_utils import (draw_circle, draw_debug_rects, draw_rect)
+from src.bonuses.bonus_manager import BonusManager
 from src.log_handle import get_logger
 logger = get_logger(__name__)
 
@@ -38,6 +39,13 @@ class PacmanGrid:
             self._game_state,
             self._matrix,
             self.ghost_den,
+            (self.start_x, self.start_y)
+        )
+        self.bonus_manager = BonusManager(
+            self._screen,
+            self._game_state,
+            self._matrix,
+            self.ghost,
             (self.start_x, self.start_y)
         )
         logger.info("pacman created")
@@ -126,6 +134,8 @@ class PacmanGrid:
             self.ghost_den,
             (self.start_x, self.start_y)
         )
+        self.bonus_manager.reset()
+        self.bonus_manager._ghost_manager = self.ghost
         
     def draw_outliners(self):
         draw_debug_rects(

@@ -47,6 +47,8 @@ class ScreenManager:
 
     def draw_screens(self):
         self.pacman.draw_level()
+        self.pacman.bonus_manager.update()
+        self.pacman.bonus_manager.draw()
         self.pacman_dead_reset()
         self.score_screen.draw_scores()
         self.check_level_complete()
