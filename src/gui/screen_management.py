@@ -86,10 +86,11 @@ class ScreenManager:
         quit_rect = quit_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 90))
         self._screen.blit(quit_text, quit_rect)
 
-    def draw_screens(self):
+    def draw_screens(self, all_sprites):
         self.pacman.draw_level()
         self.pacman_dead_reset()
         self.score_screen.draw_scores()
         self.check_level_complete()
+        all_sprites.draw(self._screen)
         self.draw_pause_overlay()
         self.draw_game_over()

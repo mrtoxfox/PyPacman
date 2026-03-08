@@ -88,8 +88,7 @@ class GameRun:
                     self.game_state.is_immortal = False
                     self.game_state.immortal_start_time = None
             self.screen.fill(Colors.BLACK)
-            self.gui.draw_screens()
-            self.all_sprites.draw(self.screen)
+            self.gui.draw_screens(self.all_sprites)
             if not self.game_state.is_paused and not self.game_state.game_over:
                 self.all_sprites.update(dt)
             self.check_highscores()
