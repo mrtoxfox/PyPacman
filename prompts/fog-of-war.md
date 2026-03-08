@@ -1,4 +1,4 @@
-# Task                                                                                                                          
+# Task
 Implement Fog of War in a Pygame Pacman clone. Unvisited maze areas are hidden. Tiles reveal permanently as Pacman moves
 near them. Ghosts under fog are invisible.
 
