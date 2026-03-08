@@ -45,6 +45,9 @@ class ScreenManager:
                 self.all_sprites.add(ghost)
             self._game_state.level_complete = False
 
+    def draw_fog(self):
+        self.pacman.fog.draw(self._screen)
+
     def draw_screens(self):
         self.pacman.draw_level()
         self.pacman_dead_reset()

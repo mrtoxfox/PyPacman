@@ -68,6 +68,7 @@ class GameRun:
             self.screen.fill(Colors.BLACK)
             self.gui.draw_screens()
             self.all_sprites.draw(self.screen)
+            self.gui.draw_fog()
             self.all_sprites.update(dt)
             self.check_highscores()
             pygame.display.flip()

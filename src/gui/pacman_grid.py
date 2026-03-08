@@ -1,6 +1,7 @@
 import json
 
 from src.configs import *
+from src.gui.fog_manager import FogManager
 from src.sprites.pacman import Pacman
 from src.sprites.ghosts import GhostManager
 from src.utils.coord_utils import (get_coords_from_idx, place_elements_offset,
@@ -26,6 +27,8 @@ class PacmanGrid:
         self._level_number = self._game_state.level
         self.load_level(self._level_number)
         logger.info("level loaded")
+        self.fog = FogManager(self.num_rows, self.num_cols, self.start_x, self.start_y)
+        self._pre_reveal_static_cells()
         self.pacman = Pacman(
             self._screen,
             self._game_state,
@@ -41,7 +44,20 @@ class PacmanGrid:
             (self.start_x, self.start_y)
         )
         logger.info("pacman created")
-        
+
+    def _pre_reveal_static_cells(self):
+        # Pacman start position
+        pr, pc = self._pacman_pos
+        self.fog.reveal_around(pr, pc)
+
+        # Ghost den perimeter so players understand where ghosts come from
+        gr, gc = self.ghost_den
+        for dr in range(-2, 3):
+            for dc in range(-2, 3):
+                nr, nc = gr + dr, gc + dc
+                if 0 <= nr < self.num_rows and 0 <= nc < self.num_cols:
+                    self.fog.reveal_around(nr, nc)
+
     def get_json(self, path):
         with open(path) as fp:
             payload = json.load(fp)
@@ -101,6 +117,12 @@ class PacmanGrid:
     def draw_elec(self, **kwargs):
         draw_rect(kwargs["x"], kwargs["y"], kwargs["w"], 1, self._screen, Colors.RED)
 
+    def update_fog(self):
+        subdiv = self.pacman.subdiv
+        row = max(0, min(self.pacman.tiny_start_x // subdiv, self.num_rows - 1))
+        col = max(0, min(self.pacman.tiny_start_y // subdiv, self.num_cols - 1))
+        self.fog.reveal_around(row, col)
+
     def draw_level(self):
         curr_x, curr_y = self.start_x, self.start_y
         for _, row in enumerate(self._matrix):
@@ -110,8 +132,11 @@ class PacmanGrid:
                 curr_x += CELL_SIZE[0]
             curr_x = self.start_x
             curr_y += CELL_SIZE[0]
+        self.update_fog()
 
     def reset_stage(self):
+        self.fog.reset()
+        self._pre_reveal_static_cells()
         self.pacman = Pacman(
             self._screen,
             self._game_state,
@@ -126,7 +151,7 @@ class PacmanGrid:
             self.ghost_den,
             (self.start_x, self.start_y)
         )
-        
+
     def draw_outliners(self):
         draw_debug_rects(
             self.start_x, self.start_y, 128, 140, 5, Colors.GREEN, self._screen
