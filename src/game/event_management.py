@@ -1,5 +1,5 @@
 from pygame import (K_DOWN, K_ESCAPE, K_LEFT, K_RIGHT, K_SPACE, K_UP, KEYDOWN,
-                    QUIT, K_q)
+                    QUIT, K_q, K_p)
 from pygame import USEREVENT
 from pygame.time import set_timer
 
@@ -12,6 +12,8 @@ class EventHandler:
         self._game_screen.running = False
 
     def key_bindings(self, key):
+        if key == K_p:
+            self._game_screen.debug_paused = not self._game_screen.debug_paused
         if key == K_LEFT:
             self._game_screen.direction = "l"
         elif key == K_RIGHT:

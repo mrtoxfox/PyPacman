@@ -21,6 +21,7 @@ class GameState:
         self._power_up_event = None
         self._power_event_trigger_time = None
         self._is_pacman_dead = False
+        self.debug_paused = False
         self._highscore = 0
         self._mins_played = 0
         self._points = -DOT_POINT

@@ -69,7 +69,8 @@ class GameRun:
             self.gui.draw_screens()
             self.all_sprites.draw(self.screen)
             self.gui.draw_fog()
-            self.all_sprites.update(dt)
+            if not self.game_state.debug_paused:
+                self.all_sprites.update(dt)
             self.check_highscores()
             pygame.display.flip()
             dt = clock.tick(self.game_state.fps)
