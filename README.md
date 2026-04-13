@@ -19,9 +19,9 @@ cd PyPacman
 2. Create and activate a virtual environment:
 
 ```bash
-python -m venv venv
-source venv/bin/activate        # macOS / Linux
-venv\Scripts\activate           # Windows
+python3 -m venv .venv
+source .venv/bin/activate       # macOS / Linux
+.venv\Scripts\activate          # Windows
 ```
 
 3. Install dependencies:
@@ -33,7 +33,7 @@ pip install -r requirements.txt
 ## Running the Game
 
 ```bash
-python main.py
+python3 main.py
 ```
 
 A 1024x768 window will open with the game.
